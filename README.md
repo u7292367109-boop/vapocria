@@ -1,6 +1,6 @@
-# Vapocria - Fornecedor Top 1 do Brasil
+# Decria Outlet | Vapes, Cosméticos & Óculos
 
-Loja online completa de vapes, pods, juices e acessórios.
+Loja online multi-categoria - outlet premium com os melhores preços.
 
 ## Tech Stack
 
@@ -13,15 +13,16 @@ Loja online completa de vapes, pods, juices e acessórios.
 ## Getting Started
 
 ```bash
-# Instalar dependências
 npm install
-
-# Configurar variáveis de ambiente
 cp .env.example .env.local
-
-# Rodar em desenvolvimento
 npm run dev
 ```
+
+## Categorias
+
+- **Vapes** - Descartáveis, pods, juices e acessórios
+- **Cosméticos** - Maquiagem, skincare, perfumes e cuidados
+- **Óculos & Lupas** - Óculos de sol, grau e lupas profissionais
 
 ## Estrutura
 
@@ -33,20 +34,12 @@ src/
 │   ├── admin/           # Painel administrativo
 │   └── api/             # API routes
 ├── components/
-│   ├── ui/              # Componentes base reutilizáveis
+│   ├── ui/              # Componentes base
 │   ├── shop/            # Componentes da loja
 │   ├── admin/           # Componentes do admin
 │   └── layout/          # Header, Footer, CartDrawer
-├── lib/                 # Utilitários, Supabase client, mock data
-├── store/               # Zustand stores (cart, auth)
+├── lib/                 # Utilitários, Supabase, mock data
+├── store/               # Zustand stores
 ├── types/               # TypeScript types
 └── hooks/               # Custom hooks
 ```
-
-## Supabase Setup
-
-Execute o schema SQL em `src/lib/supabase-schema.sql` no SQL Editor do Supabase.
-
-## Deploy
-
-Conecte o repositório ao Vercel e configure as variáveis de ambiente.

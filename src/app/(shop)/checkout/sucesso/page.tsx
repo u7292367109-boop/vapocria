@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { CheckCircle2, Package, ShoppingBag, Mail, ArrowRight } from 'lucide-react'
 
 function generateOrderNumber() {
-  const prefix = 'VP'
+  const prefix = 'DEC'
   const timestamp = Date.now().toString(36).toUpperCase()
   const random = Math.random().toString(36).substring(2, 6).toUpperCase()
   return `${prefix}-${timestamp}-${random}`
@@ -85,7 +85,7 @@ export default function CheckoutSucessoPage() {
           transition={{ delay: 0.5 }}
           className="text-2xl md:text-3xl font-bold text-white mb-3"
         >
-          Pedido Realizado com Sucesso!
+          Pedido Realizado!
         </motion.h1>
 
         {/* Order Number */}
@@ -150,7 +150,7 @@ export default function CheckoutSucessoPage() {
             className="btn-secondary flex items-center gap-2 w-full sm:w-auto justify-center"
           >
             <ShoppingBag className="w-4 h-4" />
-            Continuar Comprando
+            CONTINUAR COMPRANDO
             <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>

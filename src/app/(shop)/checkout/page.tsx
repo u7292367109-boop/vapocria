@@ -91,7 +91,7 @@ const steps = [
 ]
 
 const PIX_DISCOUNT = 0.10
-const MOCK_PIX_CODE = '00020126580014br.gov.bcb.pix0136a1b2c3d4-e5f6-7890-abcd-ef1234567890520400005303986540599.905802BR5925VAPOCRIA LTDA6009SAO PAULO62070503***6304B13F'
+const MOCK_PIX_CODE = '00020126580014br.gov.bcb.pix0136a1b2c3d4-e5f6-7890-abcd-ef1234567890520400005303986540599.905802BR5925DECRIA OUTLET LTDA6009SAO PAULO62070503***6304B13F'
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -371,7 +371,7 @@ export default function CheckoutPage() {
               onClick={() => setValue('method', pm.id)}
               className={`w-full flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${
                 method === pm.id
-                  ? 'border-primary-500/50 bg-primary-500/10 neon-border'
+                  ? 'border-primary-500/50 bg-primary-500/10'
                   : 'border-dark-600 bg-dark-800/60 hover:border-dark-500'
               }`}
             >

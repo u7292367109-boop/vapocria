@@ -25,7 +25,7 @@ export const useAuthStore = create<AuthStore>()(
       isAdmin: () => get().user?.role === 'admin',
     }),
     {
-      name: 'vapocria-auth',
+      name: 'decria-auth',
       partialize: (state) => ({ user: state.user }),
     }
   )

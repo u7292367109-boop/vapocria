@@ -9,6 +9,8 @@ import toast from 'react-hot-toast'
 import { useCartStore } from '@/store/cart-store'
 import { QuantitySelector } from '@/components/ui/QuantitySelector'
 import { formatCurrency } from '@/lib/utils'
+import { products } from '@/lib/mock-data'
+import ProductCard from '@/components/shop/ProductCard'
 
 const PIX_DISCOUNT_PERCENT = 10
 
@@ -54,7 +56,7 @@ export default function CarrinhoPage() {
       toast.error('Digite um cupom')
       return
     }
-    if (couponCode.toUpperCase() === 'VAPOCRIA10') {
+    if (couponCode.toUpperCase() === 'DECRIA10') {
       const discount = subtotal * 0.1
       setAppliedCoupon({ code: couponCode.toUpperCase(), discount })
       toast.success('Cupom aplicado com sucesso!')
@@ -102,13 +104,13 @@ export default function CarrinhoPage() {
             Seu carrinho está vazio
           </h1>
           <p className="text-dark-400 mb-8">
-            Explore nossa coleção de produtos premium e encontre o vape perfeito para você.
+            Explore nossa coleção de produtos premium e encontre o item perfeito para você.
           </p>
           <Link
             href="/produtos"
             className="btn-primary inline-flex items-center gap-2"
           >
-            Continuar Comprando
+            EXPLORAR PRODUTOS
             <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>

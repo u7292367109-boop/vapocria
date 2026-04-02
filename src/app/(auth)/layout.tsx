@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 export default function AuthLayout({
@@ -8,121 +8,72 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode
 }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    let animationId: number
-    const particles: Array<{
-      x: number
-      y: number
-      vx: number
-      vy: number
-      size: number
-      opacity: number
-      color: string
-    }> = []
-
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-
-    const colors = ['rgba(14, 165, 233, ', 'rgba(217, 70, 239, ', 'rgba(59, 130, 246, ']
-
-    const createParticles = () => {
-      const count = Math.min(60, Math.floor(window.innerWidth / 20))
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          size: Math.random() * 2 + 0.5,
-          opacity: Math.random() * 0.5 + 0.1,
-          color: colors[Math.floor(Math.random() * colors.length)],
-        })
-      }
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      particles.forEach((p) => {
-        p.x += p.vx
-        p.y += p.vy
-
-        if (p.x < 0) p.x = canvas.width
-        if (p.x > canvas.width) p.x = 0
-        if (p.y < 0) p.y = canvas.height
-        if (p.y > canvas.height) p.y = 0
-
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = `${p.color}${p.opacity})`
-        ctx.fill()
-      })
-
-      // Draw connections
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-
-          if (dist < 120) {
-            ctx.beginPath()
-            ctx.moveTo(particles[i].x, particles[i].y)
-            ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `rgba(14, 165, 233, ${0.05 * (1 - dist / 120)})`
-            ctx.lineWidth = 0.5
-            ctx.stroke()
-          }
-        }
-      }
-
-      animationId = requestAnimationFrame(animate)
-    }
-
-    resize()
-    createParticles()
-    animate()
-
-    window.addEventListener('resize', resize)
-
-    return () => {
-      cancelAnimationFrame(animationId)
-      window.removeEventListener('resize', resize)
-    }
+    setMounted(true)
   }, [])
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Gradient Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950" />
-      <div className="fixed inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-500/5 rounded-full blur-[120px]" />
+      {/* Dark gradient bg with animated gradient mesh */}
+      <div className="fixed inset-0 bg-dark-950">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(ellipse 80% 60% at 20% 30%, rgba(168, 85, 247, 0.12) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 80% at 80% 70%, rgba(249, 115, 22, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse 50% 50% at 50% 50%, rgba(212, 175, 55, 0.04) 0%, transparent 60%)
+            `,
+          }}
+        />
+        {mounted && (
+          <>
+            <motion.div
+              className="absolute w-[600px] h-[600px] rounded-full opacity-20 blur-[120px]"
+              style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.3), transparent)' }}
+              animate={{
+                x: ['-10%', '10%', '-5%'],
+                y: ['-5%', '15%', '-10%'],
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.div
+              className="absolute right-0 bottom-0 w-[500px] h-[500px] rounded-full opacity-15 blur-[100px]"
+              style={{ background: 'radial-gradient(circle, rgba(249,115,22,0.3), transparent)' }}
+              animate={{
+                x: ['10%', '-10%', '5%'],
+                y: ['5%', '-15%', '10%'],
+              }}
+              transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-10 blur-[100px]"
+              style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.3), transparent)' }}
+              animate={{
+                scale: [1, 1.2, 1],
+              }}
+              transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          </>
+        )}
+        {/* Subtle grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px',
+          }}
+        />
       </div>
-
-      {/* Particle Canvas */}
-      <canvas
-        ref={canvasRef}
-        className="fixed inset-0 pointer-events-none"
-        style={{ zIndex: 1 }}
-      />
 
       {/* Content */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="relative z-10 w-full max-w-md mx-auto px-4 py-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
       >
         {children}
       </motion.div>

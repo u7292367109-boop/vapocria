@@ -1,377 +1,216 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ChevronDown, Truck, CreditCard, QrCode, ShieldCheck, Star, Users, Package } from 'lucide-react'
+import { Wind, Sparkles, Glasses, Truck, CreditCard, Clock, QrCode } from 'lucide-react'
+import Link from 'next/link'
 
-function AnimatedCounter({ target, suffix = '' }: { target: string; suffix?: string }) {
-  return (
-    <span>{target}{suffix}</span>
-  )
+const categoryPreviews = [
+  {
+    name: 'Vapes',
+    icon: Wind,
+    href: '/produtos?categoria=vapes',
+    description: 'Descartáveis & Pods',
+    color: 'from-purple-500/20 to-purple-900/10',
+    borderColor: 'hover:border-purple-500/40',
+    iconColor: 'text-purple-400',
+  },
+  {
+    name: 'Cosméticos',
+    icon: Sparkles,
+    href: '/produtos?categoria=cosmeticos',
+    description: 'Skincare & Maquiagem',
+    color: 'from-pink-500/20 to-pink-900/10',
+    borderColor: 'hover:border-pink-500/40',
+    iconColor: 'text-pink-400',
+  },
+  {
+    name: 'Óculos',
+    icon: Glasses,
+    href: '/produtos?categoria=oculos-lupas',
+    description: 'Sol, Grau & Lupas',
+    color: 'from-amber-500/20 to-amber-900/10',
+    borderColor: 'hover:border-amber-500/40',
+    iconColor: 'text-brand-gold',
+  },
+]
+
+const trustItems = [
+  { icon: Truck, label: 'Frete Grátis +R$200' },
+  { icon: QrCode, label: 'PIX 10% OFF' },
+  { icon: CreditCard, label: '12x Sem Juros' },
+  { icon: Clock, label: 'Entrega Rápida' },
+]
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+  },
 }
 
 export default function HeroSection() {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-    },
-  }
-
-  const floatVariants = {
-    animate: {
-      y: [-10, 10, -10],
-      rotate: [-2, 2, -2],
-      transition: {
-        duration: 6,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      },
-    },
-  }
-
-  const trustBadges = [
-    { icon: Truck, label: 'Envio Rapido' },
-    { icon: CreditCard, label: '12x Sem Juros' },
-    { icon: QrCode, label: 'PIX 10% OFF' },
-    { icon: ShieldCheck, label: 'Garantia' },
-  ]
-
-  const stats = [
-    { icon: Users, value: '+10.000', label: 'Clientes' },
-    { icon: Package, value: '+500', label: 'Produtos' },
-    { icon: Star, value: '4.9', label: 'Avaliacao' },
-  ]
-
-  if (!mounted) return null
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-hero-gradient" />
-      <div
-        className="absolute inset-0"
-        style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(14,165,233,0.12) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 20%, rgba(217,70,239,0.1) 0%, transparent 50%)',
-        }}
-      />
-
-      {/* Animated orbs */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full opacity-20 blur-[120px]"
-        style={{ background: 'radial-gradient(circle, #0ea5e9, transparent)' }}
-        animate={{
-          x: [0, 100, 0],
-          y: [0, -50, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full opacity-15 blur-[100px]"
-        style={{ background: 'radial-gradient(circle, #d946ef, transparent)' }}
-        animate={{
-          x: [0, -80, 0],
-          y: [0, 60, 0],
-          scale: [1, 1.3, 1],
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 30 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: Math.random() * 4 + 2,
-              height: Math.random() * 4 + 2,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: i % 2 === 0
-                ? 'rgba(14,165,233,0.6)'
-                : 'rgba(217,70,239,0.5)',
-            }}
-            animate={{
-              y: [0, -(Math.random() * 200 + 100)],
-              x: [0, (Math.random() - 0.5) * 100],
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0.5],
-            }}
-            transition={{
-              duration: Math.random() * 6 + 4,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-              ease: 'easeOut',
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Smoke / mist effect via CSS */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute bottom-0 left-0 right-0 h-64 opacity-30"
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#0a0a0a]">
+      {/* Animated gradient mesh background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full"
           style={{
-            background: 'linear-gradient(to top, rgba(15,23,42,0.9), transparent)',
+            background: 'radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%)',
           }}
+          animate={{
+            x: [0, 30, 0],
+            y: [0, -20, 0],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <div
-          className="absolute bottom-0 left-0 w-full h-40 opacity-10"
+        <motion.div
+          className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full"
           style={{
-            background: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 800 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.02\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.5\'/%3E%3C/svg%3E")',
-            animation: 'smokeFlow 20s linear infinite',
+            background: 'radial-gradient(circle, rgba(126,34,206,0.1) 0%, transparent 70%)',
           }}
+          animate={{
+            x: [0, -25, 0],
+            y: [0, 20, 0],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute top-[30%] right-[20%] w-[35%] h-[35%] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%)',
+          }}
+          animate={{
+            x: [0, -15, 0],
+            y: [0, 15, 0],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
-
-      <style jsx>{`
-        @keyframes smokeFlow {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
 
       {/* Content */}
-      <div className="relative z-10 section-padding w-full py-20 lg:py-0">
-        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen py-32">
-          {/* Left column - Text content */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="text-center lg:text-left"
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+        <motion.div
+          className="text-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Brand heading */}
+          <motion.h1
+            variants={itemVariants}
+            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight"
           >
-            {/* Badge */}
-            <motion.div variants={itemVariants} className="inline-block mb-6">
-              <span className="glass px-4 py-2 rounded-full text-sm font-medium text-primary-400 inline-flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary-400 animate-pulse" />
-                Fornecedor Top 1 do Brasil
-              </span>
-            </motion.div>
-
-            {/* Main headline */}
-            <motion.h1
-              variants={itemVariants}
-              className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight"
-            >
-              <span className="gradient-text neon-text" style={{ filter: 'drop-shadow(0 0 30px rgba(14,165,233,0.4))' }}>
-                Vapocria
-              </span>
-            </motion.h1>
-
-            {/* Subheadline with typing effect */}
-            <motion.div variants={itemVariants} className="mb-6">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-dark-200">
-                <span className="text-primary-400">Fornecedor</span>{' '}
-                <span className="text-accent-400">Top 1</span>{' '}
-                <span className="text-dark-300">do Brasil</span>
-              </h2>
-            </motion.div>
-
-            {/* Description */}
-            <motion.p
-              variants={itemVariants}
-              className="text-dark-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
-            >
-              Descubra o melhor em vaporizadores, pods e acessorios premium.
-              Qualidade garantida, precos imbativeis e entrega rapida para todo o Brasil.
-            </motion.p>
-
-            {/* CTA Buttons */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12"
-            >
-              <Link href="/produtos">
-                <motion.button
-                  whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(14,165,233,0.4)' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn-primary text-lg px-8 py-4 w-full sm:w-auto flex items-center justify-center gap-2"
-                >
-                  Ver Produtos
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </motion.button>
-              </Link>
-              <Link href="/produtos?ofertas=true">
-                <motion.button
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: '0 0 25px rgba(217,70,239,0.3)',
-                    borderColor: 'rgba(217,70,239,0.6)',
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn-outline text-lg px-8 py-4 w-full sm:w-auto border-accent-500/50 text-accent-400 hover:bg-accent-500/10"
-                >
-                  Ofertas Especiais
-                </motion.button>
-              </Link>
-            </motion.div>
-
-            {/* Trust Badges */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap gap-3 justify-center lg:justify-start"
-            >
-              {trustBadges.map((badge, index) => (
-                <motion.div
-                  key={badge.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.2 + index * 0.1 }}
-                  className="glass-light rounded-xl px-3 py-2 flex items-center gap-2 text-sm"
-                >
-                  <badge.icon className="w-4 h-4 text-primary-400" />
-                  <span className="text-dark-300 font-medium">{badge.label}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* Right column - Featured product + stats */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="relative hidden lg:flex items-center justify-center"
-          >
-            {/* Glow ring behind product */}
-            <motion.div
-              className="absolute w-[400px] h-[400px] rounded-full"
+            <span
+              className="inline-block bg-clip-text text-transparent"
               style={{
-                background: 'conic-gradient(from 0deg, rgba(14,165,233,0.2), rgba(217,70,239,0.2), rgba(14,165,233,0.2))',
-                filter: 'blur(60px)',
+                backgroundImage:
+                  'linear-gradient(135deg, #D4AF37 0%, #F5E6B8 25%, #D4AF37 50%, #F5E6B8 75%, #D4AF37 100%)',
+                backgroundSize: '200% auto',
+                animation: 'shimmer 3s linear infinite',
               }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            />
-
-            {/* Product image container */}
-            <motion.div
-              variants={floatVariants}
-              animate="animate"
-              className="relative z-10"
             >
-              <div className="relative w-[350px] h-[350px] flex items-center justify-center">
-                {/* Glass card behind product */}
-                <div
-                  className="absolute inset-0 glass rounded-3xl neon-border"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(14,165,233,0.05), rgba(217,70,239,0.05))',
-                  }}
-                />
-                {/* Product image placeholder */}
-                <div className="relative z-10 flex flex-col items-center justify-center p-8">
-                  <div className="w-48 h-48 rounded-2xl bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center mb-4">
-                    <svg className="w-24 h-24 text-primary-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                  </div>
-                  <span className="text-dark-400 text-sm font-medium">Produto Destaque</span>
-                </div>
-              </div>
+              DECRIA OUTLET
+            </span>
+          </motion.h1>
 
-              {/* Floating badges around product */}
-              <motion.div
-                className="absolute -top-4 -right-4 glass rounded-xl px-3 py-2 neon-border"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <span className="text-primary-400 font-bold text-sm">-30%</span>
-              </motion.div>
-
-              <motion.div
-                className="absolute -bottom-2 -left-6 glass rounded-xl px-3 py-2 neon-border-purple"
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              >
-                <div className="flex items-center gap-1">
-                  <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                  <span className="text-accent-400 font-bold text-sm">4.9</span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="absolute top-1/2 -right-12 glass rounded-xl px-3 py-2"
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-              >
-                <span className="text-green-400 text-xs font-medium">Frete Gratis</span>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Stats Row */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.6 }}
-          className="absolute bottom-24 left-0 right-0 section-padding"
-        >
-          <div className="glass rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.7 + index * 0.15 }}
-                className="flex items-center gap-3 text-center"
-              >
-                <div className="w-10 h-10 rounded-xl bg-primary-500/10 flex items-center justify-center">
-                  <stat.icon className="w-5 h-5 text-primary-400" />
-                </div>
-                <div>
-                  <div className="text-xl sm:text-2xl font-bold gradient-text">
-                    <AnimatedCounter target={stat.value} />
-                  </div>
-                  <div className="text-dark-400 text-sm">{stat.label}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="flex flex-col items-center gap-2 cursor-pointer"
+          {/* Tagline */}
+          <motion.p
+            variants={itemVariants}
+            className="mt-6 text-lg sm:text-xl text-neutral-400 tracking-[0.25em] uppercase font-heading font-light"
           >
-            <span className="text-dark-500 text-xs uppercase tracking-widest">Scroll</span>
-            <ChevronDown className="w-5 h-5 text-primary-400" />
+            Vapes
+            <span className="inline-block mx-4 w-px h-4 bg-neutral-600 align-middle" />
+            Cosméticos
+            <span className="inline-block mx-4 w-px h-4 bg-neutral-600 align-middle" />
+            Óculos
+          </motion.p>
+
+          {/* Subtitle */}
+          <motion.p
+            variants={itemVariants}
+            className="mt-4 text-2xl sm:text-3xl md:text-4xl font-heading font-semibold text-white"
+          >
+            Até{' '}
+            <span className="bg-gradient-to-r from-purple-400 to-accent-500 bg-clip-text text-transparent">
+              70% OFF
+            </span>{' '}
+            nos melhores produtos
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            variants={itemVariants}
+            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <Link href="/produtos">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-4 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 text-white font-heading font-semibold text-sm tracking-wider shadow-glow-purple transition-shadow hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
+              >
+                EXPLORAR OFERTAS
+              </motion.button>
+            </Link>
+            <Link href="/produtos?sort=newest">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-4 rounded-xl border border-neutral-600 text-neutral-300 font-heading font-semibold text-sm tracking-wider hover:border-neutral-400 hover:text-white transition-colors"
+              >
+                NOVIDADES
+              </motion.button>
+            </Link>
+          </motion.div>
+
+          {/* Category preview cards */}
+          <motion.div
+            variants={itemVariants}
+            className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto"
+          >
+            {categoryPreviews.map((cat) => (
+              <Link key={cat.name} href={cat.href}>
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  className={`group relative p-6 rounded-2xl bg-gradient-to-br ${cat.color} border border-[#262626] ${cat.borderColor} transition-all duration-300 cursor-pointer`}
+                >
+                  <cat.icon className={`w-8 h-8 ${cat.iconColor} mb-3 mx-auto`} />
+                  <h3 className="font-heading font-semibold text-white text-lg">{cat.name}</h3>
+                  <p className="text-sm text-neutral-500 mt-1">{cat.description}</p>
+                </motion.div>
+              </Link>
+            ))}
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Trust bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
+        className="relative z-10 border-t border-[#262626] bg-[#0a0a0a]/80 backdrop-blur-sm"
+      >
+        <div className="max-w-7xl mx-auto px-4 py-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {trustItems.map((item) => (
+              <div key={item.label} className="flex items-center justify-center gap-2 text-neutral-400">
+                <item.icon className="w-4 h-4 text-brand-gold flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-heading font-medium">{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </section>
   )
 }

@@ -83,7 +83,7 @@ export const useCartStore = create<CartStore>()(
       },
     }),
     {
-      name: 'vapocria-cart',
+      name: 'decria-cart',
       partialize: (state) => ({ items: state.items }),
     }
   )

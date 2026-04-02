@@ -28,7 +28,7 @@ const SORT_OPTIONS = [
   { value: 'popular', label: 'Mais Populares' },
 ]
 
-const NICOTINE_OPTIONS = ['20mg', '35mg', '50mg']
+const PARENT_CATEGORIES = categories.filter((c) => c.parent_id === null)
 
 const BRANDS = Array.from(new Set(products.map((p) => p.brand))).sort()
 
@@ -48,10 +48,6 @@ function ProdutosPageContent() {
   })
   const [minPrice, setMinPrice] = useState<string>(() => searchParams.get('min') || '')
   const [maxPrice, setMaxPrice] = useState<string>(() => searchParams.get('max') || '')
-  const [selectedNicotine, setSelectedNicotine] = useState<string[]>(() => {
-    const n = searchParams.get('nicotina')
-    return n ? n.split(',') : []
-  })
   const [sortBy, setSortBy] = useState(() => searchParams.get('ordenar') || 'newest')
   const [currentPage, setCurrentPage] = useState(() => {
     const p = searchParams.get('pagina')
@@ -66,7 +62,6 @@ function ProdutosPageContent() {
     category: true,
     brand: true,
     price: true,
-    nicotine: true,
   })
 
   const toggleSection = (section: keyof typeof openSections) => {
@@ -80,12 +75,11 @@ function ProdutosPageContent() {
     if (selectedBrands.length) params.set('marcas', selectedBrands.join(','))
     if (minPrice) params.set('min', minPrice)
     if (maxPrice) params.set('max', maxPrice)
-    if (selectedNicotine.length) params.set('nicotina', selectedNicotine.join(','))
     if (sortBy !== 'newest') params.set('ordenar', sortBy)
     if (currentPage > 1) params.set('pagina', String(currentPage))
     const qs = params.toString()
     router.replace(`${pathname}${qs ? `?${qs}` : ''}`, { scroll: false })
-  }, [selectedCategories, selectedBrands, minPrice, maxPrice, selectedNicotine, sortBy, currentPage, router, pathname])
+  }, [selectedCategories, selectedBrands, minPrice, maxPrice, sortBy, currentPage, router, pathname])
 
   useEffect(() => {
     updateURL()
@@ -107,12 +101,6 @@ function ProdutosPageContent() {
     if (maxPrice) {
       result = result.filter((p) => p.price <= parseFloat(maxPrice))
     }
-    if (selectedNicotine.length > 0) {
-      result = result.filter(
-        (p) => p.nicotine_strength && selectedNicotine.includes(p.nicotine_strength)
-      )
-    }
-
     // Sort
     switch (sortBy) {
       case 'price_asc':
@@ -131,7 +119,7 @@ function ProdutosPageContent() {
     }
 
     return result
-  }, [selectedCategories, selectedBrands, minPrice, maxPrice, selectedNicotine, sortBy])
+  }, [selectedCategories, selectedBrands, minPrice, maxPrice, sortBy])
 
   // Pagination
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
@@ -172,22 +160,14 @@ function ProdutosPageContent() {
         onRemove: () => { setMinPrice(''); setMaxPrice('') },
       })
     }
-    selectedNicotine.forEach((nic) => {
-      tags.push({
-        key: `nic-${nic}`,
-        label: `Nicotina ${nic}`,
-        onRemove: () => setSelectedNicotine((prev) => prev.filter((n) => n !== nic)),
-      })
-    })
     return tags
-  }, [selectedCategories, selectedBrands, minPrice, maxPrice, selectedNicotine])
+  }, [selectedCategories, selectedBrands, minPrice, maxPrice])
 
   const clearAllFilters = () => {
     setSelectedCategories([])
     setSelectedBrands([])
     setMinPrice('')
     setMaxPrice('')
-    setSelectedNicotine([])
     setCurrentPage(1)
   }
 
@@ -203,13 +183,6 @@ function ProdutosPageContent() {
   const toggleBrand = (brand: string) => {
     setSelectedBrands((prev) =>
       prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
-    )
-    setCurrentPage(1)
-  }
-
-  const toggleNicotine = (nic: string) => {
-    setSelectedNicotine((prev) =>
-      prev.includes(nic) ? prev.filter((n) => n !== nic) : [...prev, nic]
     )
     setCurrentPage(1)
   }
@@ -238,7 +211,7 @@ function ProdutosPageContent() {
               className="overflow-hidden"
             >
               <div className="space-y-2">
-                {categories.map((cat) => (
+                {PARENT_CATEGORIES.map((cat) => (
                   <label
                     key={cat.id}
                     className="flex items-center gap-3 cursor-pointer group"
@@ -374,57 +347,6 @@ function ProdutosPageContent() {
 
       {/* Divider */}
       <div className="border-t border-dark-700/50" />
-
-      {/* Nicotine */}
-      <div>
-        <button
-          onClick={() => toggleSection('nicotine')}
-          className="flex items-center justify-between w-full text-sm font-semibold text-white mb-3"
-        >
-          Nicotina
-          <ChevronDown
-            className={cn('h-4 w-4 text-dark-400 transition-transform', openSections.nicotine && 'rotate-180')}
-          />
-        </button>
-        <AnimatePresence>
-          {openSections.nicotine && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden"
-            >
-              <div className="space-y-2">
-                {NICOTINE_OPTIONS.map((nic) => (
-                  <label
-                    key={nic}
-                    className="flex items-center gap-3 cursor-pointer group"
-                  >
-                    <div
-                      className={cn(
-                        'h-4 w-4 rounded border flex items-center justify-center transition-all',
-                        selectedNicotine.includes(nic)
-                          ? 'bg-primary-500 border-primary-500'
-                          : 'border-dark-600 group-hover:border-dark-400'
-                      )}
-                    >
-                      {selectedNicotine.includes(nic) && (
-                        <svg className="h-3 w-3 text-white" viewBox="0 0 12 12" fill="none">
-                          <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      )}
-                    </div>
-                    <span className="text-sm text-dark-300 group-hover:text-white transition-colors">
-                      {nic}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
 
       {/* Clear filters */}
       {hasFilters && (

@@ -3,12 +3,12 @@ import { Toaster } from 'react-hot-toast'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Vapocria - Fornecedor Top 1 do Brasil | Vapes, Pods & Juices',
-  description: 'Vapocria é o fornecedor número 1 de vapes do Brasil. Descartáveis, pods, juices e acessórios com os melhores preços e entrega rápida para todo o país.',
-  keywords: 'vape, vaporizador, pod, juice, descartável, elfbar, ignite, lost mary, oxbar, smok, vaporesso',
+  title: 'Decria Outlet | Vapes, Cosméticos & Óculos - Os Melhores Preços',
+  description: 'Decria Outlet - Sua loja online de vapes, cosméticos e óculos com preços de outlet. Frete grátis, PIX com desconto e parcelamento em até 12x. Entrega rápida para todo o Brasil.',
+  keywords: 'vape, cosméticos, óculos, lupas, outlet, desconto, pod, juice, maquiagem, skincare, óculos de sol',
   openGraph: {
-    title: 'Vapocria - Fornecedor Top 1 do Brasil',
-    description: 'Os melhores vapes, pods e juices com entrega rápida para todo o Brasil.',
+    title: 'Decria Outlet | Vapes, Cosméticos & Óculos',
+    description: 'Os melhores preços em vapes, cosméticos e óculos. Outlet online com entrega para todo o Brasil.',
     type: 'website',
     locale: 'pt_BR',
   },
@@ -28,10 +28,11 @@ export default function RootLayout({
           toastOptions={{
             duration: 3000,
             style: {
-              background: '#1e293b',
-              color: '#f8fafc',
-              border: '1px solid rgba(14, 165, 233, 0.3)',
+              background: '#1a1a1a',
+              color: '#fafafa',
+              border: '1px solid rgba(168, 85, 247, 0.2)',
               borderRadius: '12px',
+              fontSize: '14px',
             },
             success: {
               iconTheme: { primary: '#22c55e', secondary: '#fff' },
