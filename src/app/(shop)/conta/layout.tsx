@@ -29,12 +29,21 @@ export default function AccountLayout({
   const pathname = usePathname()
   const { user, logout } = useAuthStore()
 
-  // For now, show content regardless of auth state (mock mode)
-  // In production: if (!user) redirect('/login')
-
   return (
     <div className="min-h-screen bg-dark-950 pt-8 pb-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Decria Outlet branding header */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8 text-center lg:text-left"
+        >
+          <Link href="/" className="inline-block">
+            <span className="font-display text-2xl font-bold gradient-text tracking-wider">DECRIA</span>
+            <span className="text-brand-gold text-xs font-heading tracking-[0.2em] ml-2 uppercase">Outlet</span>
+          </Link>
+        </motion.div>
+
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Desktop Sidebar */}
           <aside className="hidden lg:block w-72 shrink-0">
@@ -50,7 +59,7 @@ export default function AccountLayout({
             >
               {/* User avatar section */}
               <div className="flex items-center gap-4 mb-8 pb-6 border-b border-dark-700/50">
-                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold text-lg">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold text-lg shadow-glow-purple">
                   {(user?.full_name || 'U').charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0">

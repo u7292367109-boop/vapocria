@@ -336,7 +336,7 @@ export default function ProdutoDetailPage() {
             {/* Price */}
             <div className="glass rounded-2xl p-5 space-y-3">
               <div className="flex items-baseline gap-3 flex-wrap">
-                <span className="text-3xl sm:text-4xl font-bold text-white">
+                <span className="text-3xl sm:text-4xl font-bold text-primary-400">
                   {formatCurrency(product.price)}
                 </span>
                 {product.compare_at_price && (
@@ -456,7 +456,7 @@ export default function ProdutoDetailPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleBuyNow}
-                  className="flex-1 sm:flex-none sm:px-8 flex items-center justify-center gap-3 py-4 rounded-xl bg-dark-800 border border-dark-600 text-white font-bold text-base hover:bg-dark-700 hover:border-primary-500/30 transition-all"
+                  className="flex-1 sm:flex-none sm:px-8 flex items-center justify-center gap-3 py-4 rounded-xl bg-gradient-to-r from-accent-500 to-accent-600 text-white font-bold text-base hover:shadow-lg hover:shadow-accent-500/25 transition-all"
                 >
                   <Zap className="h-5 w-5" />
                   COMPRAR AGORA

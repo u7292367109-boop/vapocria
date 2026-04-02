@@ -14,12 +14,7 @@ import ProductCard from '@/components/shop/ProductCard'
 
 const PIX_DISCOUNT_PERCENT = 10
 
-const mockRecommendations = [
-  { id: 'rec-1', name: 'Ignite V80 Watermelon', slug: 'ignite-v80-watermelon', price: 79.90, thumbnail: '/products/ignite-v80.webp', brand: 'Ignite' },
-  { id: 'rec-2', name: 'Elf Bar BC5000 Mango', slug: 'elf-bar-bc5000-mango', price: 89.90, thumbnail: '/products/elfbar-bc5000.webp', brand: 'Elf Bar' },
-  { id: 'rec-3', name: 'Lost Mary BM5000 Grape', slug: 'lost-mary-bm5000-grape', price: 69.90, thumbnail: '/products/lost-mary.webp', brand: 'Lost Mary' },
-  { id: 'rec-4', name: 'Oxbar G8000 Blueberry', slug: 'oxbar-g8000-blueberry', price: 99.90, thumbnail: '/products/oxbar-g8000.webp', brand: 'Oxbar' },
-]
+const recommendedProducts = products.filter((p) => p.is_featured && p.is_active).slice(0, 4)
 
 const shippingOptions = [
   { id: 'pac', label: 'PAC', price: 18.90, days: '8-12 dias úteis' },
@@ -425,25 +420,8 @@ export default function CarrinhoPage() {
           Você também pode gostar
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {mockRecommendations.map((product) => (
-            <Link
-              key={product.id}
-              href={`/produto/${product.slug}`}
-              className="card-hover group p-4"
-            >
-              <div className="relative w-full aspect-square rounded-xl bg-dark-800 overflow-hidden mb-3">
-                <Image
-                  src={product.thumbnail}
-                  alt={product.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
-              </div>
-              <p className="text-[10px] text-primary-400 font-medium">{product.brand}</p>
-              <p className="text-sm font-medium text-white line-clamp-2 mb-2">{product.name}</p>
-              <p className="text-base font-bold gradient-text">{formatCurrency(product.price)}</p>
-            </Link>
+          {recommendedProducts.map((product, i) => (
+            <ProductCard key={product.id} product={product} index={i} />
           ))}
         </div>
       </motion.section>

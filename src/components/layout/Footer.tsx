@@ -1,146 +1,149 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 import {
   Instagram,
-  Facebook,
-  Twitter,
-  Youtube,
-  Mail,
-  MapPin,
-  Phone,
-  ShieldCheck,
-  Lock,
-  CreditCard,
-  QrCode,
-  Barcode,
-  Send,
   MessageCircle,
+  Mail,
+  Phone,
+  Clock,
+  ShieldCheck,
+  CreditCard,
+  Lock,
+  Zap,
 } from 'lucide-react'
-import { useState } from 'react'
 
-const INSTITUTIONAL = [
+const institucional = [
   { label: 'Sobre Nos', href: '/sobre' },
-  { label: 'Politica de Privacidade', href: '/privacidade' },
+  { label: 'Perguntas Frequentes', href: '/faq' },
+  { label: 'Politica de Privacidade', href: '/politica-privacidade' },
   { label: 'Termos de Uso', href: '/termos' },
-  { label: 'Politica de Troca', href: '/trocas' },
-  { label: 'Trabalhe Conosco', href: '/trabalhe-conosco' },
-]
-
-const CATEGORIES = [
-  { label: 'Descartaveis', href: '/categorias/descartaveis' },
-  { label: 'Pods', href: '/categorias/pods' },
-  { label: 'Juices', href: '/categorias/juices' },
-  { label: 'Acessorios', href: '/categorias/acessorios' },
-  { label: 'Kits', href: '/categorias/kits' },
-]
-
-const SUPPORT = [
-  { label: 'Central de Ajuda', href: '/ajuda' },
-  { label: 'Rastrear Pedido', href: '/rastreamento' },
-  { label: 'WhatsApp', href: 'https://wa.me/5511999999999' },
+  { label: 'Trocas e Devoluções', href: '/trocas-devolucoes' },
   { label: 'Contato', href: '/contato' },
-  { label: 'FAQ', href: '/faq' },
 ]
 
-const SOCIALS = [
-  { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Facebook, href: '#', label: 'Facebook' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Youtube, href: '#', label: 'Youtube' },
+const categorias = [
+  { label: 'Vapes', href: '/produtos?categoria=vapes' },
+  { label: 'Cosmeticos', href: '/produtos?categoria=cosmeticos' },
+  { label: 'Oculos', href: '/produtos?categoria=oculos' },
+  { label: 'Lupas', href: '/produtos?categoria=lupas' },
+  { label: 'Ofertas', href: '/produtos?ofertas=true' },
 ]
+
+const TikTokIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.78a8.28 8.28 0 004.76 1.5v-3.4a4.85 4.85 0 01-1-.19z" />
+  </svg>
+)
 
 export default function Footer() {
   const [email, setEmail] = useState('')
+  const [subscribed, setSubscribed] = useState(false)
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: integrate newsletter signup
-    setEmail('')
+    if (email.trim()) {
+      setSubscribed(true)
+      setEmail('')
+      setTimeout(() => setSubscribed(false), 4000)
+    }
   }
 
   return (
-    <footer className="relative mt-20">
-      {/* Top gradient border */}
-      <div className="h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent" />
-
-      <div className="bg-gradient-to-b from-dark-900 to-dark-950">
-        {/* Newsletter section */}
-        <div className="section-padding py-10 border-b border-dark-700/30">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-1">
-                Receba ofertas exclusivas
-              </h3>
-              <p className="text-sm text-dark-400">
-                Cadastre-se e ganhe 10% OFF na primeira compra
-              </p>
+    <>
+      <footer className="relative border-t border-dark-800 bg-gradient-to-b from-dark-950 to-[#111]">
+        {/* Newsletter Section */}
+        <div className="border-b border-dark-800">
+          <div className="mx-auto max-w-7xl px-4 py-12 lg:px-6">
+            <div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
+              <div className="text-center lg:text-left">
+                <h3 className="font-display text-xl font-bold text-white">
+                  Receba ofertas exclusivas
+                </h3>
+                <p className="mt-1 text-sm text-dark-400">
+                  Cadastre-se e ganhe 10% OFF na primeira compra
+                </p>
+              </div>
+              <form onSubmit={handleSubscribe} className="flex w-full max-w-md gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Seu melhor e-mail"
+                  required
+                  className="h-11 flex-1 rounded-lg border border-dark-700 bg-dark-900 px-4 text-sm text-white placeholder-dark-500 outline-none transition-colors focus:border-primary-500"
+                />
+                <button
+                  type="submit"
+                  className="h-11 whitespace-nowrap rounded-lg bg-gradient-to-r from-primary-600 to-primary-500 px-6 text-sm font-semibold text-white transition-all hover:from-primary-500 hover:to-primary-400 hover:shadow-glow-purple"
+                >
+                  {subscribed ? 'INSCRITO!' : 'INSCREVER'}
+                </button>
+              </form>
             </div>
-            <form
-              onSubmit={handleNewsletterSubmit}
-              className="flex w-full md:w-auto"
-            >
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Seu melhor e-mail"
-                required
-                className="flex-1 md:w-72 bg-dark-800 border border-dark-600 rounded-l-xl px-4 py-3 text-sm text-white placeholder:text-dark-400 focus:outline-none focus:ring-1 focus:ring-primary-500/50 focus:border-primary-500"
-              />
-              <button
-                type="submit"
-                className="btn-primary rounded-l-none rounded-r-xl px-5 flex items-center gap-2 whitespace-nowrap"
-              >
-                <Send className="h-4 w-4" />
-                <span className="hidden sm:inline">Inscrever</span>
-              </button>
-            </form>
           </div>
         </div>
 
-        {/* Main footer columns */}
-        <div className="section-padding py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
-            {/* Brand column */}
-            <div className="col-span-2 md:col-span-4 lg:col-span-1 mb-4 lg:mb-0">
-              <Link href="/" className="inline-block mb-4">
-                <span className="font-display text-2xl font-bold gradient-text tracking-wider">
-                  VAPOCRIA
+        {/* Main Footer */}
+        <div className="mx-auto max-w-7xl px-4 py-12 lg:px-6">
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+            {/* Brand */}
+            <div className="lg:col-span-1">
+              <Link href="/" className="inline-flex items-baseline gap-1.5">
+                <span className="font-display text-2xl font-bold text-white">DECRIA</span>
+                <span className="font-heading text-[9px] font-semibold uppercase tracking-[0.2em] text-brand-gold">
+                  Outlet
                 </span>
               </Link>
-              <p className="text-sm text-dark-400 mb-4 leading-relaxed">
-                Fornecedor Top 1 do Brasil. Os melhores vapes, pods e juices com
-                entrega rapida para todo o pais.
+              <p className="mt-3 text-sm leading-relaxed text-dark-500">
+                Sua outlet favorita online. Produtos premium com os melhores precos do Brasil.
               </p>
-              {/* Social icons */}
-              <div className="flex items-center gap-3">
-                {SOCIALS.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="p-2 rounded-lg bg-dark-800 text-dark-400 hover:text-primary-400 hover:bg-dark-700 transition-all border border-dark-700/50 hover:border-primary-500/30"
-                  >
-                    <social.icon className="h-4 w-4" />
-                  </a>
-                ))}
+
+              {/* Social Icons */}
+              <div className="mt-5 flex gap-3">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-dark-800 text-dark-400 transition-all hover:border-primary-500/50 hover:text-primary-400"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="h-4 w-4" />
+                </a>
+                <a
+                  href="https://tiktok.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-dark-800 text-dark-400 transition-all hover:border-primary-500/50 hover:text-primary-400"
+                  aria-label="TikTok"
+                >
+                  <TikTokIcon />
+                </a>
+                <a
+                  href="https://wa.me/5511999999999"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-dark-800 text-dark-400 transition-all hover:border-green-500/50 hover:text-green-400"
+                  aria-label="WhatsApp"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                </a>
               </div>
             </div>
 
             {/* Institucional */}
             <div>
-              <h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">
+              <h4 className="mb-4 text-xs font-semibold uppercase tracking-wider text-white">
                 Institucional
               </h4>
               <ul className="space-y-2.5">
-                {INSTITUTIONAL.map((link) => (
+                {institucional.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-dark-400 hover:text-primary-400 transition-colors"
+                      className="text-sm text-dark-500 transition-colors hover:text-dark-300"
                     >
                       {link.label}
                     </Link>
@@ -151,15 +154,15 @@ export default function Footer() {
 
             {/* Categorias */}
             <div>
-              <h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">
+              <h4 className="mb-4 text-xs font-semibold uppercase tracking-wider text-white">
                 Categorias
               </h4>
               <ul className="space-y-2.5">
-                {CATEGORIES.map((link) => (
+                {categorias.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-dark-400 hover:text-primary-400 transition-colors"
+                      className="text-sm text-dark-500 transition-colors hover:text-dark-300"
                     >
                       {link.label}
                     </Link>
@@ -170,82 +173,113 @@ export default function Footer() {
 
             {/* Atendimento */}
             <div>
-              <h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">
+              <h4 className="mb-4 text-xs font-semibold uppercase tracking-wider text-white">
                 Atendimento
               </h4>
-              <ul className="space-y-2.5">
-                {SUPPORT.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-dark-400 hover:text-primary-400 transition-colors"
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2.5">
+                  <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-400" />
+                  <div>
+                    <span className="block text-sm text-dark-400">WhatsApp</span>
+                    <a
+                      href="https://wa.me/5511999999999"
+                      className="text-sm text-dark-500 transition-colors hover:text-white"
                     >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
+                      (11) 99999-9999
+                    </a>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary-400" />
+                  <div>
+                    <span className="block text-sm text-dark-400">E-mail</span>
+                    <a
+                      href="mailto:contato@decriaoutlet.com.br"
+                      className="text-sm text-dark-500 transition-colors hover:text-white"
+                    >
+                      contato@decriaoutlet.com.br
+                    </a>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Clock className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
+                  <div>
+                    <span className="block text-sm text-dark-400">Horario</span>
+                    <span className="text-sm text-dark-500">Seg-Sex: 9h as 18h</span>
+                  </div>
+                </li>
               </ul>
             </div>
 
             {/* Pagamento & Seguranca */}
-            <div className="col-span-2 md:col-span-1">
-              <h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">
+            <div>
+              <h4 className="mb-4 text-xs font-semibold uppercase tracking-wider text-white">
                 Pagamento
               </h4>
-              <div className="flex flex-wrap gap-2 mb-6">
-                <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-dark-800 border border-dark-700/50 text-dark-300 text-xs">
-                  <QrCode className="h-4 w-4 text-primary-400" />
-                  PIX
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-md border border-dark-800 bg-dark-900 px-2.5 py-1.5 text-xs text-dark-400">
+                    <Zap className="h-3 w-3 text-green-400" />
+                    PIX
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-md border border-dark-800 bg-dark-900 px-2.5 py-1.5 text-xs text-dark-400">
+                    <CreditCard className="h-3 w-3 text-primary-400" />
+                    Cartao
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-md border border-dark-800 bg-dark-900 px-2.5 py-1.5 text-xs text-dark-400">
+                    Boleto
+                  </span>
                 </div>
-                <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-dark-800 border border-dark-700/50 text-dark-300 text-xs">
-                  <CreditCard className="h-4 w-4 text-primary-400" />
-                  Credito
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-dark-800 border border-dark-700/50 text-dark-300 text-xs">
-                  <Barcode className="h-4 w-4 text-primary-400" />
-                  Boleto
-                </div>
-              </div>
 
-              <h4 className="text-sm font-semibold text-white mb-3 uppercase tracking-wider">
-                Seguranca
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-dark-800 border border-dark-700/50 text-dark-300 text-xs">
-                  <Lock className="h-3.5 w-3.5 text-green-400" />
-                  SSL
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-dark-800 border border-dark-700/50 text-dark-300 text-xs">
-                  <ShieldCheck className="h-3.5 w-3.5 text-green-400" />
-                  Compra Segura
+                <div className="pt-2">
+                  <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-white">
+                    Seguranca
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-md border border-dark-800 bg-dark-900 px-2.5 py-1.5 text-xs text-dark-400">
+                      <Lock className="h-3 w-3 text-green-400" />
+                      SSL
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-md border border-dark-800 bg-dark-900 px-2.5 py-1.5 text-xs text-dark-400">
+                      <ShieldCheck className="h-3 w-3 text-primary-400" />
+                      Compra Segura
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-dark-700/30">
-          <div className="section-padding py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-dark-500">
-            <p>&copy; {new Date().getFullYear()} Vapocria. Todos os direitos reservados.</p>
-            <p>
-              Feito com{' '}
-              <span className="text-accent-500">&#9829;</span> no Brasil
-            </p>
+        {/* Bottom Bar */}
+        <div className="border-t border-dark-800">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-dark-600 sm:flex-row lg:px-6">
+            <span>&copy; 2024 Decria Outlet. Todos os direitos reservados.</span>
+            <div className="flex gap-4">
+              <Link href="/politica-privacidade" className="transition-colors hover:text-dark-400">
+                Privacidade
+              </Link>
+              <Link href="/termos" className="transition-colors hover:text-dark-400">
+                Termos
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </footer>
 
-      {/* WhatsApp floating button */}
-      <a
+      {/* Floating WhatsApp Button */}
+      <motion.a
         href="https://wa.me/5511999999999"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Fale conosco no WhatsApp"
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center h-14 w-14 rounded-full bg-green-500 text-white shadow-lg shadow-green-500/30 hover:bg-green-400 hover:scale-110 transition-all"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg shadow-green-500/30 transition-transform hover:scale-110"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 1, type: 'spring', stiffness: 260, damping: 20 }}
+        aria-label="WhatsApp"
       >
         <MessageCircle className="h-6 w-6" />
-      </a>
-    </footer>
+      </motion.a>
+    </>
   )
 }

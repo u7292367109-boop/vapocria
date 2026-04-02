@@ -10,7 +10,7 @@ export default function ShopLayout({
   return (
     <>
       <Header />
-      <main className="min-h-screen">{children}</main>
+      <main className="min-h-screen bg-dark-950">{children}</main>
       <Footer />
       <CartDrawer />
     </>

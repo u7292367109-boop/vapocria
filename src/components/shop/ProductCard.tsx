@@ -12,9 +12,10 @@ import { formatCurrency, calculateDiscount } from '@/lib/utils'
 interface ProductCardProps {
   product: Product
   index?: number
+  viewMode?: 'grid' | 'list'
 }
 
-export default function ProductCard({ product, index = 0 }: ProductCardProps) {
+export default function ProductCard({ product, index = 0, viewMode = 'grid' }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem)
   const discount = product.compare_at_price
     ? calculateDiscount(product.price, product.compare_at_price)
@@ -33,6 +34,66 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       },
       iconTheme: { primary: '#a855f7', secondary: '#fff' },
     })
+  }
+
+  if (viewMode === 'list') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: index * 0.05 }}
+      >
+        <Link
+          href={`/produto/${product.slug}`}
+          className="group flex gap-4 sm:gap-6 rounded-2xl bg-[#141414] border border-[#262626] p-3 sm:p-4 transition-all duration-300 hover:border-[#404040] hover:shadow-card-hover"
+        >
+          <div className="relative w-28 h-28 sm:w-36 sm:h-36 flex-shrink-0 rounded-xl overflow-hidden bg-[#0a0a0a]">
+            {discount > 0 && (
+              <div className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-lg bg-gradient-to-r from-red-600 to-red-500 text-[10px] font-bold text-white">
+                -{discount}%
+              </div>
+            )}
+            <Image
+              src={product.thumbnail}
+              alt={product.name}
+              fill
+              sizes="144px"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </div>
+          <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
+            <div>
+              <p className="text-xs text-neutral-500 font-heading uppercase tracking-wider mb-1">{product.brand}</p>
+              <h3 className="text-sm sm:text-base font-heading font-semibold text-white line-clamp-2 group-hover:text-purple-300 transition-colors">
+                {product.name}
+              </h3>
+              <p className="text-xs text-neutral-500 mt-1 line-clamp-2 hidden sm:block">
+                {product.short_description}
+              </p>
+            </div>
+            <div className="flex items-end justify-between mt-2">
+              <div>
+                {product.compare_at_price && product.compare_at_price > product.price && (
+                  <span className="text-xs text-neutral-500 line-through mr-2">
+                    {formatCurrency(product.compare_at_price)}
+                  </span>
+                )}
+                <span className="text-lg font-heading font-bold text-purple-400">
+                  {formatCurrency(product.price)}
+                </span>
+              </div>
+              <button
+                onClick={handleAddToCart}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 text-white text-xs font-heading font-semibold transition-all hover:shadow-glow-purple active:scale-[0.98]"
+              >
+                <ShoppingCart className="h-3.5 w-3.5" />
+                Adicionar
+              </button>
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+    )
   }
 
   return (

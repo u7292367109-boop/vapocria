@@ -7,26 +7,26 @@ import { motion } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Eye, EyeOff, Loader2, User, Mail, Phone, FileText, Lock } from 'lucide-react'
+import { Eye, EyeOff, User, Mail, Phone, FileText, Lock, UserPlus } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth-store'
 import { validateCPF } from '@/lib/utils'
 
 const registerSchema = z
   .object({
-    fullName: z.string().min(3, 'Nome deve ter no mínimo 3 caracteres'),
-    email: z.string().email('Email inválido'),
-    phone: z.string().min(14, 'Telefone inválido'),
-    cpf: z.string().min(14, 'CPF inválido').refine(
+    fullName: z.string().min(3, 'Nome deve ter no minimo 3 caracteres'),
+    email: z.string().email('Email invalido'),
+    phone: z.string().min(14, 'Telefone invalido'),
+    cpf: z.string().min(14, 'CPF invalido').refine(
       (val) => validateCPF(val),
-      'CPF inválido'
+      'CPF invalido'
     ),
-    password: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres'),
+    password: z.string().min(6, 'Senha deve ter no minimo 6 caracteres'),
     confirmPassword: z.string(),
-    terms: z.boolean().refine((val) => val === true, 'Você deve aceitar os termos'),
+    terms: z.boolean().refine((val) => val === true, 'Voce deve aceitar os termos'),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Senhas não conferem',
+    message: 'Senhas nao conferem',
     path: ['confirmPassword'],
   })
 
@@ -58,7 +58,6 @@ export default function CadastroPage() {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
@@ -127,185 +126,205 @@ export default function CadastroPage() {
   ]
 
   return (
-    <div className="glass rounded-2xl p-8 neon-border">
-      {/* Logo */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="text-center mb-8"
-      >
-        <Link href="/" className="inline-block">
-          <h1 className="font-display text-3xl font-bold gradient-text">
-            VAPOCRIA
-          </h1>
-        </Link>
-        <p className="text-dark-400 text-sm mt-2">
-          Crie sua conta premium
-        </p>
-      </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 30, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <div className="glass rounded-3xl p-8 md:p-10 shadow-card">
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-center mb-8"
+        >
+          <Link href="/" className="inline-block">
+            <h1 className="font-display text-4xl font-bold gradient-text tracking-wider">
+              DECRIA
+            </h1>
+            <p className="text-sm font-heading text-brand-gold tracking-[0.3em] mt-1 uppercase">
+              Outlet
+            </p>
+          </Link>
+          <p className="text-dark-400 text-sm mt-3">
+            Crie sua conta e aproveite as ofertas
+          </p>
+        </motion.div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {inputFields.map((field, index) => (
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {inputFields.map((field, index) => (
+            <motion.div
+              key={field.name}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + index * 0.05 }}
+            >
+              <label className="block text-sm font-medium text-dark-300 mb-1.5">
+                {field.label}
+              </label>
+              <div className="relative">
+                <field.icon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-500" />
+                <input
+                  type={field.type}
+                  {...register(field.name)}
+                  onChange={(e) => {
+                    const val = field.mask ? field.mask(e.target.value) : e.target.value
+                    setValue(field.name, val, { shouldValidate: true })
+                  }}
+                  placeholder={field.placeholder}
+                  className="input-field pl-10"
+                  autoComplete={field.autoComplete}
+                />
+              </div>
+              {errors[field.name] && (
+                <p className="text-red-400 text-xs mt-1">
+                  {errors[field.name]?.message}
+                </p>
+              )}
+            </motion.div>
+          ))}
+
+          {/* Password */}
           <motion.div
-            key={field.name}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 + index * 0.05 }}
+            transition={{ delay: 0.35 }}
           >
             <label className="block text-sm font-medium text-dark-300 mb-1.5">
-              {field.label}
+              Senha
             </label>
             <div className="relative">
-              <field.icon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-500" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-500" />
               <input
-                type={field.type}
-                {...register(field.name)}
-                onChange={(e) => {
-                  const val = field.mask ? field.mask(e.target.value) : e.target.value
-                  setValue(field.name, val, { shouldValidate: true })
-                }}
-                placeholder={field.placeholder}
-                className="input-field pl-10"
-                autoComplete={field.autoComplete}
+                type={showPassword ? 'text' : 'password'}
+                {...register('password')}
+                placeholder="Crie uma senha forte"
+                className="input-field pl-10 pr-10"
+                autoComplete="new-password"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 transition-colors"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
-            {errors[field.name] && (
-              <p className="text-red-400 text-xs mt-1">
-                {errors[field.name]?.message}
-              </p>
+            {errors.password && (
+              <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>
             )}
           </motion.div>
-        ))}
 
-        {/* Password */}
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.35 }}
-        >
-          <label className="block text-sm font-medium text-dark-300 mb-1.5">
-            Senha
-          </label>
-          <div className="relative">
-            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-500" />
-            <input
-              type={showPassword ? 'text' : 'password'}
-              {...register('password')}
-              placeholder="Crie uma senha forte"
-              className="input-field pl-10 pr-10"
-              autoComplete="new-password"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 transition-colors"
+          {/* Confirm Password */}
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <label className="block text-sm font-medium text-dark-300 mb-1.5">
+              Confirmar Senha
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-500" />
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                {...register('confirmPassword')}
+                placeholder="Confirme sua senha"
+                className="input-field pl-10 pr-10"
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 transition-colors"
+              >
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="text-red-400 text-xs mt-1">{errors.confirmPassword.message}</p>
+            )}
+          </motion.div>
+
+          {/* Terms */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.45 }}
+          >
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                {...register('terms')}
+                className="w-4 h-4 mt-0.5 rounded border-dark-600 bg-dark-800 text-primary-500 focus:ring-primary-500/50"
+              />
+              <span className="text-sm text-dark-400">
+                Li e aceito os{' '}
+                <Link href="#" className="text-primary-400 hover:text-primary-300">
+                  Termos de Uso
+                </Link>{' '}
+                e{' '}
+                <Link href="#" className="text-primary-400 hover:text-primary-300">
+                  Politica de Privacidade
+                </Link>
+              </span>
+            </label>
+            {errors.terms && (
+              <p className="text-red-400 text-xs mt-1">{errors.terms.message}</p>
+            )}
+          </motion.div>
+
+          {/* Submit */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <motion.button
+              type="submit"
+              disabled={isSubmitting}
+              className="btn-primary w-full flex items-center justify-center gap-2 py-3.5 text-base font-bold tracking-wider"
+              whileTap={{ scale: 0.98 }}
             >
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            </button>
-          </div>
-          {errors.password && (
-            <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>
-          )}
-        </motion.div>
+              {isSubmitting ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <>
+                  <UserPlus className="w-4 h-4" />
+                  CRIAR CONTA
+                </>
+              )}
+            </motion.button>
+          </motion.div>
+        </form>
 
-        {/* Confirm Password */}
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <label className="block text-sm font-medium text-dark-300 mb-1.5">
-            Confirmar Senha
-          </label>
-          <div className="relative">
-            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-500" />
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              {...register('confirmPassword')}
-              placeholder="Confirme sua senha"
-              className="input-field pl-10 pr-10"
-              autoComplete="new-password"
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 transition-colors"
-            >
-              {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            </button>
-          </div>
-          {errors.confirmPassword && (
-            <p className="text-red-400 text-xs mt-1">{errors.confirmPassword.message}</p>
-          )}
-        </motion.div>
-
-        {/* Terms */}
-        <motion.div
+        {/* Login Link */}
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.45 }}
+          transition={{ delay: 0.55 }}
+          className="text-center text-sm text-dark-400 mt-6"
         >
-          <label className="flex items-start gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              {...register('terms')}
-              className="w-4 h-4 mt-0.5 rounded border-dark-600 bg-dark-800 text-primary-500 focus:ring-primary-500/50"
-            />
-            <span className="text-sm text-dark-400">
-              Eu concordo com os{' '}
-              <Link href="#" className="text-primary-400 hover:text-primary-300">
-                Termos de Uso
-              </Link>{' '}
-              e{' '}
-              <Link href="#" className="text-primary-400 hover:text-primary-300">
-                Política de Privacidade
-              </Link>
-            </span>
-          </label>
-          {errors.terms && (
-            <p className="text-red-400 text-xs mt-1">{errors.terms.message}</p>
-          )}
-        </motion.div>
-
-        {/* Submit */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn-primary w-full flex items-center justify-center gap-2 py-3.5 text-base font-bold"
+          Ja tem conta?{' '}
+          <Link
+            href="/login"
+            className="text-primary-400 hover:text-primary-300 font-medium transition-colors"
           >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Criando conta...
-              </>
-            ) : (
-              'CRIAR CONTA'
-            )}
-          </button>
-        </motion.div>
-      </form>
+            Entrar
+          </Link>
+        </motion.p>
+      </div>
 
-      {/* Login Link */}
+      {/* Bottom branding */}
       <motion.p
+        className="text-center text-xs text-dark-600 mt-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.55 }}
-        className="text-center text-sm text-dark-400 mt-6"
+        transition={{ delay: 0.8 }}
       >
-        Já tem conta?{' '}
-        <Link
-          href="/login"
-          className="text-primary-400 hover:text-primary-300 font-medium transition-colors"
-        >
-          Faça login
-        </Link>
+        Decria Outlet &mdash; Vapes, Cosmeticos, Oculos & Lupas
       </motion.p>
-    </div>
+    </motion.div>
   )
 }

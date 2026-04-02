@@ -3,18 +3,18 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { X, Minus, Plus, ShoppingBag, Trash2, Truck } from 'lucide-react'
+import { X, Minus, Plus, Trash2, ShoppingBag, ShieldCheck } from 'lucide-react'
 import { useCartStore } from '@/store/cart-store'
 import { formatCurrency } from '@/lib/utils'
 
 const FREE_SHIPPING_THRESHOLD = 200
 
 export default function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, updateQuantity, getSubtotal } =
+  const { items, isOpen, closeCart, removeItem, updateQuantity, getSubtotal, getItemCount } =
     useCartStore()
 
-  const subtotal = useCartStore((s) => s.getSubtotal())
-  const itemCount = useCartStore((s) => s.getItemCount())
+  const subtotal = getSubtotal()
+  const itemCount = getItemCount()
   const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100)
   const remaining = FREE_SHIPPING_THRESHOLD - subtotal
 
@@ -38,209 +38,172 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed inset-y-0 right-0 z-50 w-full sm:w-[420px] bg-dark-900 border-l border-dark-700/50 shadow-2xl flex flex-col"
+            className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-dark-800 bg-dark-950"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-dark-700/50">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-dark-800 px-5 py-4">
+              <div className="flex items-center gap-2.5">
                 <ShoppingBag className="h-5 w-5 text-primary-400" />
-                <h2 className="text-lg font-semibold text-white">
-                  Carrinho
-                </h2>
+                <h2 className="font-heading text-lg font-semibold text-white">Seu Carrinho</h2>
                 {itemCount > 0 && (
-                  <span className="text-xs font-medium text-dark-400">
-                    ({itemCount} {itemCount === 1 ? 'item' : 'itens'})
+                  <span className="rounded-full bg-dark-800 px-2 py-0.5 text-xs font-medium text-dark-400">
+                    {itemCount} {itemCount === 1 ? 'item' : 'itens'}
                   </span>
                 )}
               </div>
               <button
                 onClick={closeCart}
-                className="p-1.5 text-dark-400 hover:text-white transition-colors rounded-lg hover:bg-dark-800"
-                aria-label="Fechar carrinho"
+                className="rounded-lg p-1.5 text-dark-400 transition-colors hover:bg-dark-800 hover:text-white"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            {/* Free shipping progress */}
-            {items.length > 0 && (
-              <div className="px-5 py-3 border-b border-dark-700/30">
-                <div className="flex items-center gap-2 mb-2">
-                  <Truck className="h-4 w-4 text-primary-400" />
-                  {remaining > 0 ? (
-                    <p className="text-xs text-dark-300">
+            {items.length === 0 ? (
+              /* Empty State */
+              <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-dark-900">
+                  <ShoppingBag className="h-8 w-8 text-dark-600" />
+                </div>
+                <div className="text-center">
+                  <p className="font-medium text-dark-300">Seu carrinho esta vazio</p>
+                  <p className="mt-1 text-sm text-dark-600">
+                    Explore nossos produtos e encontre ofertas incriveis
+                  </p>
+                </div>
+                <Link
+                  href="/produtos"
+                  onClick={closeCart}
+                  className="mt-2 rounded-lg bg-gradient-to-r from-primary-600 to-primary-500 px-8 py-2.5 text-sm font-semibold text-white transition-all hover:from-primary-500 hover:to-primary-400 hover:shadow-glow-purple"
+                >
+                  EXPLORAR PRODUTOS
+                </Link>
+              </div>
+            ) : (
+              <>
+                {/* Free Shipping Progress */}
+                <div className="border-b border-dark-800 px-5 py-3">
+                  {subtotal >= FREE_SHIPPING_THRESHOLD ? (
+                    <p className="text-center text-sm font-medium text-green-400">
+                      Voce ganhou frete gratis!
+                    </p>
+                  ) : (
+                    <p className="text-center text-sm text-dark-400">
                       Faltam{' '}
-                      <span className="text-primary-400 font-semibold">
+                      <span className="font-semibold text-primary-400">
                         {formatCurrency(remaining)}
                       </span>{' '}
                       para frete gratis
                     </p>
-                  ) : (
-                    <p className="text-xs text-green-400 font-semibold">
-                      Voce ganhou frete gratis!
-                    </p>
                   )}
-                </div>
-                <div className="h-1.5 w-full rounded-full bg-dark-800 overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${shippingProgress}%` }}
-                    transition={{ duration: 0.5, ease: 'easeOut' }}
-                    className={`h-full rounded-full ${
-                      shippingProgress >= 100
-                        ? 'bg-gradient-to-r from-green-500 to-green-400'
-                        : 'bg-gradient-to-r from-primary-500 to-accent-500'
-                    }`}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Cart items */}
-            <div className="flex-1 overflow-y-auto">
-              {items.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full px-6 text-center">
-                  <div className="w-20 h-20 rounded-full bg-dark-800 flex items-center justify-center mb-4">
-                    <ShoppingBag className="h-8 w-8 text-dark-500" />
+                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-dark-800">
+                    <motion.div
+                      className="h-full rounded-full bg-gradient-to-r from-primary-600 to-primary-400"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${shippingProgress}%` }}
+                      transition={{ duration: 0.5, ease: 'easeOut' }}
+                    />
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    Carrinho vazio
-                  </h3>
-                  <p className="text-sm text-dark-400 mb-6">
-                    Explore nossos produtos e adicione seus favoritos ao
-                    carrinho.
-                  </p>
-                  <button
-                    onClick={closeCart}
-                    className="btn-primary text-sm"
-                  >
-                    Explorar Produtos
-                  </button>
                 </div>
-              ) : (
-                <ul className="divide-y divide-dark-700/30">
+
+                {/* Cart Items */}
+                <div className="flex-1 overflow-y-auto px-5 py-4">
                   <AnimatePresence initial={false}>
                     {items.map((item) => (
-                      <motion.li
+                      <motion.div
                         key={item.product.id}
                         layout
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{
-                          opacity: 0,
-                          x: 80,
-                          transition: { duration: 0.2 },
-                        }}
-                        className="px-5 py-4"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                        transition={{ duration: 0.25, ease: 'easeInOut' }}
+                        className="mb-4"
                       >
-                        <div className="flex gap-3">
-                          {/* Product image */}
-                          <div className="relative h-20 w-20 flex-shrink-0 rounded-xl overflow-hidden bg-dark-800 border border-dark-700/50">
+                        <div className="flex gap-3 rounded-lg border border-dark-800 bg-dark-900/50 p-3">
+                          {/* Thumbnail */}
+                          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-dark-800">
                             <Image
-                              src={item.product.thumbnail}
+                              src={item.product.thumbnail || '/placeholder.png'}
                               alt={item.product.name}
                               fill
                               className="object-cover"
-                              sizes="80px"
                             />
                           </div>
 
-                          {/* Product details */}
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-medium text-white truncate mb-0.5">
-                              {item.product.name}
-                            </h4>
-                            {item.product.brand && (
-                              <p className="text-xs text-dark-400 mb-2">
-                                {item.product.brand}
-                              </p>
-                            )}
+                          {/* Details */}
+                          <div className="flex flex-1 flex-col justify-between">
+                            <div>
+                              {item.product.brand && (
+                                <span className="text-[10px] font-semibold uppercase tracking-wider text-primary-400">
+                                  {item.product.brand}
+                                </span>
+                              )}
+                              <h4 className="line-clamp-2 text-sm font-medium leading-tight text-white">
+                                {item.product.name}
+                              </h4>
+                            </div>
+                            <div className="flex items-end justify-between">
+                              <span className="text-sm font-semibold text-white">
+                                {formatCurrency(item.product.price * item.quantity)}
+                              </span>
 
-                            <div className="flex items-center justify-between">
-                              {/* Quantity controls */}
-                              <div className="flex items-center gap-0.5 bg-dark-800 rounded-lg border border-dark-700/50">
+                              {/* Quantity Controls */}
+                              <div className="flex items-center gap-1">
                                 <button
                                   onClick={() =>
-                                    updateQuantity(
-                                      item.product.id,
-                                      item.quantity - 1
-                                    )
+                                    updateQuantity(item.product.id, item.quantity - 1)
                                   }
-                                  className="p-1.5 text-dark-400 hover:text-white transition-colors"
-                                  aria-label="Diminuir quantidade"
+                                  className="flex h-7 w-7 items-center justify-center rounded border border-dark-700 text-dark-400 transition-colors hover:border-dark-600 hover:text-white"
                                 >
-                                  <Minus className="h-3.5 w-3.5" />
+                                  <Minus className="h-3 w-3" />
                                 </button>
-                                <span className="w-7 text-center text-sm font-medium text-white">
+                                <span className="flex h-7 w-8 items-center justify-center text-xs font-medium text-white">
                                   {item.quantity}
                                 </span>
                                 <button
                                   onClick={() =>
-                                    updateQuantity(
-                                      item.product.id,
-                                      item.quantity + 1
-                                    )
+                                    updateQuantity(item.product.id, item.quantity + 1)
                                   }
-                                  className="p-1.5 text-dark-400 hover:text-white transition-colors"
-                                  aria-label="Aumentar quantidade"
+                                  className="flex h-7 w-7 items-center justify-center rounded border border-dark-700 text-dark-400 transition-colors hover:border-dark-600 hover:text-white"
                                 >
-                                  <Plus className="h-3.5 w-3.5" />
+                                  <Plus className="h-3 w-3" />
+                                </button>
+                                <button
+                                  onClick={() => removeItem(item.product.id)}
+                                  className="ml-1 flex h-7 w-7 items-center justify-center rounded text-dark-600 transition-colors hover:text-red-400"
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" />
                                 </button>
                               </div>
-
-                              {/* Price */}
-                              <span className="text-sm font-semibold text-primary-400">
-                                {formatCurrency(
-                                  item.product.price * item.quantity
-                                )}
-                              </span>
                             </div>
                           </div>
-
-                          {/* Remove button */}
-                          <button
-                            onClick={() => removeItem(item.product.id)}
-                            className="self-start p-1 text-dark-500 hover:text-red-400 transition-colors"
-                            aria-label="Remover item"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
                         </div>
-                      </motion.li>
+                      </motion.div>
                     ))}
                   </AnimatePresence>
-                </ul>
-              )}
-            </div>
-
-            {/* Footer with totals and actions */}
-            {items.length > 0 && (
-              <div className="border-t border-dark-700/50 px-5 py-4 space-y-4">
-                {/* Subtotal */}
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-dark-300">Subtotal</span>
-                  <span className="text-lg font-bold text-white">
-                    {formatCurrency(subtotal)}
-                  </span>
                 </div>
 
-                {/* Buttons */}
-                <div className="space-y-2">
+                {/* Summary */}
+                <div className="border-t border-dark-800 p-5">
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="text-sm text-dark-400">Subtotal</span>
+                    <span className="text-lg font-bold text-white">{formatCurrency(subtotal)}</span>
+                  </div>
+
                   <Link
                     href="/carrinho"
                     onClick={closeCart}
-                    className="btn-primary w-full text-center block text-sm"
+                    className="flex h-12 w-full items-center justify-center rounded-lg bg-gradient-to-r from-primary-600 to-primary-500 text-sm font-bold uppercase tracking-wider text-white transition-all hover:from-primary-500 hover:to-primary-400 hover:shadow-glow-purple"
                   >
-                    Finalizar Compra
+                    FINALIZAR COMPRA
                   </Link>
-                  <button
-                    onClick={closeCart}
-                    className="btn-secondary w-full text-sm"
-                  >
-                    Continuar Comprando
-                  </button>
+
+                  <div className="mt-3 flex items-center justify-center gap-1.5 text-dark-600">
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                    <span className="text-[11px]">Compra 100% segura e protegida</span>
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </motion.div>
         </>

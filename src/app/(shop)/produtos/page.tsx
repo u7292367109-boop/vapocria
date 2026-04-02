@@ -11,11 +11,9 @@ import {
   Grid3X3,
   List,
   ChevronDown,
-  Search,
   Package,
 } from 'lucide-react'
 import { products, categories } from '@/lib/mock-data'
-import { Product } from '@/types'
 import ProductCard from '@/components/shop/ProductCard'
 import { cn, formatCurrency } from '@/lib/utils'
 
@@ -23,8 +21,8 @@ const ITEMS_PER_PAGE = 12
 
 const SORT_OPTIONS = [
   { value: 'newest', label: 'Mais Recentes' },
-  { value: 'price_asc', label: 'Menor Preco' },
-  { value: 'price_desc', label: 'Maior Preco' },
+  { value: 'price_asc', label: 'Menor Preço' },
+  { value: 'price_desc', label: 'Maior Preço' },
   { value: 'popular', label: 'Mais Populares' },
 ]
 
@@ -305,7 +303,7 @@ function ProdutosPageContent() {
           onClick={() => toggleSection('price')}
           className="flex items-center justify-between w-full text-sm font-semibold text-white mb-3"
         >
-          Faixa de Preco
+          Faixa de Preço
           <ChevronDown
             className={cn('h-4 w-4 text-dark-400 transition-transform', openSections.price && 'rotate-180')}
           />
@@ -344,9 +342,6 @@ function ProdutosPageContent() {
           )}
         </AnimatePresence>
       </div>
-
-      {/* Divider */}
-      <div className="border-t border-dark-700/50" />
 
       {/* Clear filters */}
       {hasFilters && (

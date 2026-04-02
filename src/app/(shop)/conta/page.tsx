@@ -53,16 +53,16 @@ const navCards = [
     label: 'Meus Pedidos',
     description: 'Acompanhe seus pedidos e historico',
     icon: ShoppingBag,
-    color: 'from-blue-500 to-cyan-500',
-    glow: 'shadow-blue-500/20',
+    color: 'from-primary-500 to-primary-600',
+    glow: 'shadow-primary-500/20',
   },
   {
     href: '#perfil',
     label: 'Meus Dados',
     description: 'Edite suas informacoes pessoais',
     icon: User,
-    color: 'from-primary-500 to-accent-500',
-    glow: 'shadow-primary-500/20',
+    color: 'from-accent-500 to-accent-600',
+    glow: 'shadow-accent-500/20',
   },
   {
     href: '#enderecos',
@@ -121,7 +121,6 @@ export default function AccountPage() {
   })
 
   const handleSaveProfile = () => {
-    // In production: API call to update user profile
     setIsEditing(false)
   }
 
@@ -168,13 +167,13 @@ export default function AccountPage() {
       <motion.div variants={itemVariants}>
         <h1 className="text-2xl sm:text-3xl font-bold text-dark-100">
           Ola,{' '}
-          <span className="bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent">
+          <span className="gradient-text">
             {currentUser.full_name.split(' ')[0]}
           </span>
           !
         </h1>
         <p className="text-dark-400 mt-1 text-sm">
-          Gerencie sua conta e acompanhe seus pedidos
+          Gerencie sua conta <span className="text-brand-gold">Decria Outlet</span> e acompanhe seus pedidos
         </p>
       </motion.div>
 
@@ -234,7 +233,7 @@ export default function AccountPage() {
           )}
         >
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-dark-100">
+            <h2 className="text-lg font-semibold text-dark-100 font-heading">
               Dados Pessoais
             </h2>
             <Button
@@ -336,7 +335,7 @@ export default function AccountPage() {
           )}
         >
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-dark-100">Enderecos</h2>
+            <h2 className="text-lg font-semibold text-dark-100 font-heading">Enderecos</h2>
             <Button
               variant="outline"
               size="sm"

@@ -8,7 +8,6 @@ import {
   ShoppingBag,
   Eye,
   Truck,
-  Package,
   ArrowLeft,
 } from 'lucide-react'
 import { sampleOrders } from '@/lib/mock-data'
@@ -16,7 +15,6 @@ import {
   formatCurrency,
   formatDate,
   getOrderStatusLabel,
-  getOrderStatusColor,
   cn,
 } from '@/lib/utils'
 import { Button } from '@/components/ui/Button'
@@ -96,7 +94,7 @@ export default function OrdersPage() {
           <ArrowLeft className="h-4 w-4" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-dark-100">Meus Pedidos</h1>
+          <h1 className="text-2xl font-bold text-dark-100 font-heading">Meus Pedidos</h1>
           <p className="text-sm text-dark-400 mt-0.5">
             {sampleOrders.length} pedido{sampleOrders.length !== 1 ? 's' : ''} no total
           </p>
@@ -118,7 +116,7 @@ export default function OrdersPage() {
               'px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap',
               'border transition-all duration-200',
               activeFilter === tab.key
-                ? 'bg-primary-500/15 text-primary-400 border-primary-500/30 shadow-[0_0_12px_rgba(14,165,233,0.15)]'
+                ? 'bg-primary-500/15 text-primary-400 border-primary-500/30 shadow-glow-purple'
                 : 'bg-dark-900/60 text-dark-400 border-dark-700/50 hover:border-dark-500 hover:text-dark-200'
             )}
           >
@@ -145,7 +143,7 @@ export default function OrdersPage() {
               <ShoppingBag className="h-8 w-8 text-dark-600" />
             </div>
             <p className="text-dark-300 font-medium">
-              Voce ainda nao fez nenhum pedido
+              Nenhum pedido encontrado
             </p>
             <p className="text-dark-500 text-sm mt-1">
               Explore nossos produtos e faca seu primeiro pedido
@@ -250,7 +248,6 @@ export default function OrdersPage() {
                       size="sm"
                       icon={<Truck className="h-3.5 w-3.5" />}
                       onClick={() => {
-                        // In production: open tracking URL
                         window.open(
                           `https://www.linkcorreios.com.br/?id=${order.tracking_code}`,
                           '_blank'
