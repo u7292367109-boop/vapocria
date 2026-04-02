@@ -56,7 +56,7 @@ export default function AdminPedidos() {
     >
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Pedidos</h1>
+        <h1 className="text-2xl font-bold text-white font-heading">Pedidos</h1>
         <p className="text-sm text-dark-400 mt-1">{sampleOrders.length} pedidos no total</p>
       </div>
 
@@ -74,7 +74,7 @@ export default function AdminPedidos() {
           >
             {activeTab === tab.value && (
               <motion.div
-                layoutId="activeTab"
+                layoutId="adminOrderTab"
                 className="absolute inset-0 bg-primary-500/20 border border-primary-500/30 rounded-md"
                 transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
               />
@@ -109,7 +109,7 @@ export default function AdminPedidos() {
                 <th className="p-4 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">Pagamento</th>
                 <th className="p-4 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">Total</th>
                 <th className="p-4 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">Data</th>
-                <th className="p-4 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">Ações</th>
+                <th className="p-4 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">Acoes</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-dark-800/30">

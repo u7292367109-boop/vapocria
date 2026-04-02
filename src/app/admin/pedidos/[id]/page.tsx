@@ -19,7 +19,6 @@ import {
 import { sampleOrders } from '@/lib/mock-data'
 import {
   formatCurrency,
-  formatDate,
   formatDateTime,
   getOrderStatusLabel,
   getOrderStatusColor,
@@ -101,7 +100,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-white">Pedido #{order.id}</h1>
+              <h1 className="text-2xl font-bold text-white font-heading">Pedido #{order.id}</h1>
               <button onClick={copyOrderId} className="p-1 text-dark-400 hover:text-white transition-colors">
                 <Copy className="w-4 h-4" />
               </button>
@@ -130,7 +129,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         variants={item}
         className="rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
       >
-        <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+        <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2 font-heading">
           <Clock className="w-4 h-4 text-primary-400" />
           Atualizar Status
         </h2>
@@ -159,7 +158,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             variants={item}
             className="rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
           >
-            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2 font-heading">
               <Package className="w-4 h-4 text-primary-400" />
               Itens do Pedido
             </h2>
@@ -205,7 +204,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-dark-400">Frete ({order.shipping_method?.toUpperCase() || 'N/A'})</span>
-                <span className="text-dark-300">{order.shipping_cost > 0 ? formatCurrency(order.shipping_cost) : 'Grátis'}</span>
+                <span className="text-dark-300">{order.shipping_cost > 0 ? formatCurrency(order.shipping_cost) : 'Gratis'}</span>
               </div>
               {order.discount > 0 && (
                 <div className="flex justify-between text-sm">
@@ -215,7 +214,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
               )}
               <div className="flex justify-between text-base font-bold pt-2 border-t border-dark-700/50">
                 <span className="text-white">Total</span>
-                <span className="text-white">{formatCurrency(order.total)}</span>
+                <span className="gradient-text">{formatCurrency(order.total)}</span>
               </div>
             </div>
           </motion.div>
@@ -225,9 +224,9 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             variants={item}
             className="rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
           >
-            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2 font-heading">
               <Clock className="w-4 h-4 text-primary-400" />
-              Histórico do Pedido
+              Historico do Pedido
             </h2>
             <div className="relative">
               <div className="absolute left-[11px] top-2 bottom-2 w-0.5 bg-dark-700" />
@@ -269,13 +268,13 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             variants={item}
             className="rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
           >
-            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2 font-heading">
               <Truck className="w-4 h-4 text-primary-400" />
               Rastreamento e Notas
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-dark-300 mb-1.5">Código de Rastreamento</label>
+                <label className="block text-sm font-medium text-dark-300 mb-1.5">Codigo de Rastreamento</label>
                 <div className="flex gap-2">
                   <input
                     value={trackingCode}
@@ -284,7 +283,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                     placeholder="BR123456789"
                   />
                   <button
-                    onClick={() => toast.success('Código de rastreamento salvo!')}
+                    onClick={() => toast.success('Codigo de rastreamento salvo!')}
                     className="px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors"
                   >
                     Salvar
@@ -315,7 +314,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             variants={item}
             className="rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
           >
-            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2 font-heading">
               <User className="w-4 h-4 text-primary-400" />
               Cliente
             </h2>
@@ -344,9 +343,9 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             variants={item}
             className="rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
           >
-            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2 font-heading">
               <MapPin className="w-4 h-4 text-primary-400" />
-              Endereço de Entrega
+              Endereco de Entrega
             </h2>
             <div className="text-sm text-dark-300 space-y-1">
               <p className="text-white">
@@ -366,18 +365,18 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             variants={item}
             className="rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
           >
-            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2 font-heading">
               <CreditCard className="w-4 h-4 text-primary-400" />
               Pagamento
             </h2>
             <div className="space-y-3">
               <div>
-                <span className="text-xs text-dark-400">Método</span>
+                <span className="text-xs text-dark-400">Metodo</span>
                 <p className="text-sm text-white capitalize">
                   {order.payment_method === 'pix'
                     ? 'PIX'
                     : order.payment_method === 'credit_card'
-                    ? 'Cartão de Crédito'
+                    ? 'Cartao de Credito'
                     : order.payment_method === 'boleto'
                     ? 'Boleto'
                     : order.payment_method || 'N/A'}

@@ -83,7 +83,7 @@ const maxChartValue = Math.max(...mockChartData.map((d) => d.value))
 export default function AdminDashboard() {
   const stats = [
     {
-      label: 'Receita Total',
+      label: 'Receita',
       value: 78432,
       prefix: 'R$ ',
       change: 12.5,
@@ -118,9 +118,9 @@ export default function AdminDashboard() {
       prefix: '',
       change: -2.4,
       icon: Users,
-      color: 'from-orange-500 to-orange-600',
-      bgColor: 'bg-orange-500/10',
-      borderColor: 'border-orange-500/20',
+      color: 'from-brand-gold to-yellow-600',
+      bgColor: 'bg-yellow-500/10',
+      borderColor: 'border-yellow-500/20',
     },
   ]
 
@@ -132,6 +132,13 @@ export default function AdminDashboard() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
+      {/* Decria branding subtitle */}
+      <motion.div variants={item} className="flex items-center gap-2">
+        <span className="font-display text-lg gradient-text font-bold">Decria Outlet</span>
+        <span className="text-dark-500 text-sm">|</span>
+        <span className="text-dark-400 text-sm font-heading">Painel Administrativo</span>
+      </motion.div>
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {stats.map((stat) => {
@@ -161,7 +168,7 @@ export default function AdminDashboard() {
               </div>
               <div className={`flex items-center gap-1 text-xs ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
                 {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                <span>{isPositive ? '+' : ''}{stat.change}% vs mês anterior</span>
+                <span>{isPositive ? '+' : ''}{stat.change}% vs mes anterior</span>
               </div>
             </motion.div>
           )
@@ -176,20 +183,19 @@ export default function AdminDashboard() {
           className="xl:col-span-2 rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
         >
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-white">Receita dos últimos 30 dias</h2>
+            <h2 className="text-lg font-semibold text-white font-heading">Receita dos ultimos 30 dias</h2>
             <span className="text-xs text-dark-400 px-3 py-1 rounded-full bg-dark-800/50 border border-dark-700/50">
-              Últimos 30 dias
+              Ultimos 30 dias
             </span>
           </div>
           <div className="flex items-end justify-between gap-3 h-48">
             {mockChartData.map((d, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-2">
                 <motion.div
-                  className="w-full rounded-t-md bg-gradient-to-t from-primary-500/80 to-primary-400/60 relative group cursor-pointer"
+                  className="w-full rounded-t-md bg-gradient-to-t from-primary-500/80 to-accent-400/60 relative group cursor-pointer hover:from-primary-400/90 hover:to-accent-300/70 transition-colors"
                   initial={{ height: 0 }}
                   animate={{ height: `${(d.value / maxChartValue) * 100}%` }}
                   transition={{ duration: 0.8, delay: i * 0.1, ease: 'easeOut' }}
-                  whileHover={{ opacity: 0.8 }}
                 >
                   <div className="absolute -top-8 left-1/2 -translate-x-1/2 hidden group-hover:block bg-dark-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
                     R$ {d.value.toLocaleString('pt-BR')}
@@ -206,7 +212,7 @@ export default function AdminDashboard() {
           variants={item}
           className="rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
         >
-          <h2 className="text-lg font-semibold text-white mb-4">Ações Rápidas</h2>
+          <h2 className="text-lg font-semibold text-white mb-4 font-heading">Acoes Rapidas</h2>
           <div className="space-y-3">
             <Link href="/admin/produtos/novo">
               <motion.div
@@ -230,7 +236,7 @@ export default function AdminDashboard() {
             </Link>
             <Link href="/admin/cupons">
               <motion.div
-                className="flex items-center gap-3 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 hover:bg-orange-500/20 transition-colors cursor-pointer"
+                className="flex items-center gap-3 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-brand-gold hover:bg-yellow-500/20 transition-colors cursor-pointer"
                 whileHover={{ x: 4 }}
               >
                 <Tag className="w-5 h-5" />
@@ -250,7 +256,7 @@ export default function AdminDashboard() {
           className="xl:col-span-2 rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white">Pedidos Recentes</h2>
+            <h2 className="text-lg font-semibold text-white font-heading">Pedidos Recentes</h2>
             <Link
               href="/admin/pedidos"
               className="text-xs text-primary-400 hover:text-primary-300 transition-colors flex items-center gap-1"
@@ -300,7 +306,7 @@ export default function AdminDashboard() {
           variants={item}
           className="rounded-xl border border-dark-800/50 bg-dark-800/30 backdrop-blur-sm p-6"
         >
-          <h2 className="text-lg font-semibold text-white mb-4">Mais Vendidos</h2>
+          <h2 className="text-lg font-semibold text-white mb-4 font-heading">Mais Vendidos</h2>
           <div className="space-y-4">
             {topProducts.map(({ product, unitsSold, revenue }, index) => (
               <div key={product.id} className="flex items-center gap-3">
