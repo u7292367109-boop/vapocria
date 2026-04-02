@@ -35,17 +35,8 @@ const timelineSteps = [
   { key: 'delivered', label: 'Entregue', icon: Home },
 ] as const
 
-const statusOrder: OrderStatus[] = [
-  'pending',
-  'confirmed',
-  'processing',
-  'shipped',
-  'delivered',
-]
-
 function getActiveStepIndex(status: OrderStatus): number {
   if (status === 'cancelled' || status === 'refunded') return -1
-  // processing counts as confirmed
   if (status === 'processing') return 1
   const idx = ['pending', 'confirmed', 'shipped', 'delivered'].indexOf(status)
   return idx >= 0 ? idx : 0
@@ -106,7 +97,7 @@ export default function OrderDetailPage({
           <ArrowLeft className="h-4 w-4" />
         </Link>
         <div>
-          <h1 className="text-xl font-bold text-dark-100">
+          <h1 className="text-xl font-bold text-dark-100 font-heading">
             Pedido {order.id}
           </h1>
           <p className="text-xs text-dark-500 mt-0.5">
@@ -124,7 +115,7 @@ export default function OrderDetailPage({
           'border border-dark-700/50'
         )}
       >
-        <h2 className="text-sm font-semibold text-dark-200 mb-6">
+        <h2 className="text-sm font-semibold text-dark-200 mb-6 font-heading">
           Status do Pedido
         </h2>
 
@@ -163,7 +154,7 @@ export default function OrderDetailPage({
                         'border-2 transition-all duration-500',
                         isCompleted
                           ? isCurrent
-                            ? 'bg-primary-500/20 border-primary-500 shadow-[0_0_16px_rgba(14,165,233,0.3)]'
+                            ? 'bg-primary-500/20 border-primary-500 shadow-glow-purple'
                             : 'bg-primary-500 border-primary-500'
                           : 'bg-dark-800 border-dark-600'
                       )}
@@ -218,7 +209,7 @@ export default function OrderDetailPage({
           'border border-dark-700/50'
         )}
       >
-        <h2 className="text-sm font-semibold text-dark-200 mb-4">
+        <h2 className="text-sm font-semibold text-dark-200 mb-4 font-heading">
           Informacoes do Pedido
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -287,7 +278,7 @@ export default function OrderDetailPage({
           'border border-dark-700/50'
         )}
       >
-        <h2 className="text-sm font-semibold text-dark-200 mb-4">
+        <h2 className="text-sm font-semibold text-dark-200 mb-4 font-heading">
           Itens do Pedido
         </h2>
         <div className="space-y-3">
@@ -330,7 +321,7 @@ export default function OrderDetailPage({
           'border border-dark-700/50'
         )}
       >
-        <h2 className="text-sm font-semibold text-dark-200 mb-4">
+        <h2 className="text-sm font-semibold text-dark-200 mb-4 font-heading">
           Endereco de Entrega
         </h2>
         <div className="flex items-start gap-3">
@@ -367,7 +358,7 @@ export default function OrderDetailPage({
           'border border-dark-700/50'
         )}
       >
-        <h2 className="text-sm font-semibold text-dark-200 mb-4">Resumo</h2>
+        <h2 className="text-sm font-semibold text-dark-200 mb-4 font-heading">Resumo</h2>
         <div className="space-y-2.5">
           <div className="flex justify-between text-sm">
             <span className="text-dark-400">Subtotal</span>
@@ -394,7 +385,7 @@ export default function OrderDetailPage({
           <div className="border-t border-dark-700/50 pt-2.5 mt-2.5">
             <div className="flex justify-between">
               <span className="text-sm font-semibold text-dark-200">Total</span>
-              <span className="text-lg font-bold bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent">
+              <span className="text-lg font-bold gradient-text">
                 {formatCurrency(order.total)}
               </span>
             </div>

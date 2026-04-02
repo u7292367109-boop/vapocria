@@ -26,7 +26,7 @@ const navItems = [
   { href: '/admin/pedidos', label: 'Pedidos', icon: ShoppingCart },
   { href: '/admin/clientes', label: 'Clientes', icon: Users },
   { href: '/admin/cupons', label: 'Cupons', icon: Tag },
-  { href: '/admin/configuracoes', label: 'Configurações', icon: Settings },
+  { href: '/admin/configuracoes', label: 'Configuracoes', icon: Settings },
 ]
 
 function getPageTitle(pathname: string): string {
@@ -38,7 +38,7 @@ function getPageTitle(pathname: string): string {
   if (pathname.includes('/pedidos')) return 'Pedidos'
   if (pathname.includes('/clientes')) return 'Clientes'
   if (pathname.includes('/cupons')) return 'Cupons'
-  if (pathname.includes('/configuracoes')) return 'Configurações'
+  if (pathname.includes('/configuracoes')) return 'Configuracoes'
   return 'Admin'
 }
 
@@ -62,25 +62,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      {/* Logo */}
+      {/* Logo - Decria Admin branding */}
       <div className="flex items-center justify-between px-4 h-16 border-b border-dark-800/50">
         <Link href="/admin/dashboard" className="flex items-center gap-2">
           <motion.div
-            className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center"
+            className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-glow-purple"
             whileHover={{ scale: 1.05 }}
           >
-            <span className="text-white font-display text-xs font-bold">V</span>
+            <span className="text-white font-display text-xs font-bold">D</span>
           </motion.div>
           <AnimatePresence>
             {sidebarOpen && (
-              <motion.span
+              <motion.div
                 initial={{ opacity: 0, width: 0 }}
                 animate={{ opacity: 1, width: 'auto' }}
                 exit={{ opacity: 0, width: 0 }}
-                className="font-display text-sm font-bold text-white whitespace-nowrap overflow-hidden"
+                className="flex items-baseline gap-1 whitespace-nowrap overflow-hidden"
               >
-                Vapocria Admin
-              </motion.span>
+                <span className="font-display text-sm font-bold gradient-text">Decria</span>
+                <span className="text-brand-gold text-[10px] font-heading tracking-wider uppercase">Admin</span>
+              </motion.div>
             )}
           </AnimatePresence>
         </Link>
@@ -136,7 +137,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* User info */}
       <div className="px-3 py-4 border-t border-dark-800/50">
         <div className="flex items-center gap-3 px-3 py-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 shadow-glow-purple">
             <span className="text-white text-xs font-bold">
               {user?.full_name?.charAt(0) || 'A'}
             </span>
@@ -153,7 +154,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   {user?.full_name || 'Administrador'}
                 </p>
                 <p className="text-xs text-dark-400 truncate">
-                  {user?.email || 'admin@vapocria.com'}
+                  {user?.email || 'admin@decria.com'}
                 </p>
               </motion.div>
             )}
@@ -230,7 +231,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             >
               <Menu className="w-5 h-5" />
             </button>
-            <h1 className="text-lg font-semibold text-white">{pageTitle}</h1>
+            <h1 className="text-lg font-semibold text-white font-heading">{pageTitle}</h1>
           </div>
 
           <div className="flex items-center gap-3">
@@ -247,11 +248,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Notifications */}
             <button className="relative p-2 rounded-lg text-dark-400 hover:text-white hover:bg-dark-800 transition-colors">
               <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary-500 rounded-full" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-accent-500 rounded-full" />
             </button>
 
             {/* Admin avatar */}
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-glow-purple">
               <span className="text-white text-xs font-bold">
                 {user?.full_name?.charAt(0) || 'A'}
               </span>
